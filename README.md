@@ -2,5 +2,5 @@
 ## How to run the project 
 - Download the folder 
 - Open the command promt in project location
-- Run these commands 
-- pip install requirements.txt
+- Run this command
+-- pip install requirements.txt
