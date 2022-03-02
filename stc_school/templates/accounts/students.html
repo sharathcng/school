@@ -1,0 +1,143 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% block title %}
+Students-List
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block pageHeader %}
+List of Students - Class : {{className}}
+{% endblock %}
+{% block dashboard %}
+
+<div class="container table-responsive table-responsive-md table-responsive-lg table-responsive-x">
+
+    <a href="{{request.META.HTTP_REFERER|escape}}" class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+
+    <table id="myTable" class="table table-hover table-striped border border-dark rounded text-center caption-top ">
+
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Class joined</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Blood Group</th>
+                <th scope="col">View</th>
+                {% if user.is_authenticated and user.role == 2 and user.is_classTeacher %}
+                <th scope="col">Edit</th>
+                <th scope="col">Disable Login</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in students %}
+            <tr class="mx-auto">
+                <th scope="row">{{ forloop.counter }}</th>
+                <td class="text-uppercase">{{s.full_name}}<br></td>
+                <td>{{s.started_class}}<br></td>
+                <td>
+                    {% if s.gender == 1 %}
+                    Male
+                    {% elif s.gender == 2 %}
+                    Female
+                    {% else %}
+                    Other
+                    {% endif %}
+                </td>
+                <td>
+                    {{s.blood_group}}
+                </td>
+                <td><a href="{% url 'studentProfileView' s.user_id %}" class="btn btn-sm btn-success">View</a></td>
+                {% if user.is_authenticated and user.role == 2 and user.is_classTeacher %}
+                <td><a href="{% url 'studentProfileEdit' s.user_id %}" class="btn btn-sm btn-warning">Edit</a></td>
+                {% if s.user_id.is_active == True %}
+                <td><a href="{% url 'disable-student' s.user_id className.id %}"
+                        class="btn btn-sm btn-danger">Disable</a></td>
+                {% else %}
+                <td><a href="{% url 'enable-student' s.user_id className.id %}"
+                        class="btn btn-sm btn-primary">Enable</a></td>
+                {% endif %}
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- <div class="pagination align-middle text-center">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a class="btn btn-sm btn-dark" href="?page=1">
+                <i class='bx bxs-arrow-to-left'></i>first
+            </a>
+            <a class="btn btn-sm btn-dark" href="?page={{ page_obj.previous_page_number }}">
+                <i class='bx bxs-chevron-left'></i>previous
+            </a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+            <a class="btn btn-sm btn-dark" href="?page={{ page_obj.next_page_number }}">
+                next<i class='bx bxs-chevron-right'></i>
+            </a>
+            <a class="btn btn-sm btn-dark" href="?page={{ page_obj.paginator.num_pages }}">
+                last<i class='bx bxs-arrow-to-right'></i>
+            </a>
+            {% endif %}
+        </span>
+    </div> -->
+</div>
+
+
+{% endblock %}
+{% block jsFiles %}
+<script>
+    $('#myTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'colvis',
+            {
+                extend: 'copy',
+                split: [
+                    {
+                        extend: 'pdf',
+                        title: 'Students List',
+                        messageTop: 'The list of students studying in our school.',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                    {
+                        extend: 'excel',
+                        title: 'Students List',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                    {
+                        extend: 'csv',
+                        title: 'Students List',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                ],
+            },
+        ],
+
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal({
+                    header: function (row) {
+                        var data = row.data();
+                        return 'Details for ' + data[0] + ' ' + data[1];
+                    }
+                }),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                    tableClass: 'table'
+                })
+            }
+        }
+    });
+</script>
+{% endblock %}

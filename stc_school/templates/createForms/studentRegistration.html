@@ -1,0 +1,204 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% block title %}
+Register New Student
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block pageHeader %}
+Register New Student
+{% endblock %}
+
+{% block dashboard %}
+
+<div class="container">
+    <a href="{{request.META.HTTP_REFERER|escape}}" class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{fm.non_field_errors}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-10 border border-dark rounded">
+                <form method="POST" class="m-3">
+                    {% csrf_token %}
+                    <div class="row  justify-content-center">
+                        <div class="col-3 h5 text-end">
+                            <b>Username<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col-4">
+                            {{form.username}}
+                            <div class="text-end text-danger">{{form.username.errors}}</div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col h5 text-end">
+                            <b>Password<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.password1}}
+                            <div class="text-end text-danger">{{form.password1.errors}}</div>
+                        </div>
+                        
+                        <div class="col h5 text-end">
+                            <b>Confirm Password<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.password2}}
+                            <div class="text-end text-danger">{{form.password2.errors}}</div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col h5 text-end">
+                            <b>Full Name<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="full_name" placeholder="Student Name" required />
+                        </div>
+                        <div class="col h5 text-end">
+                            <b>Date of Birth<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            <input type="date" class="form-control" name="dateOfBirth" required>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col h5 text-end">
+                            <b>Started Class :</b>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="startedClass">
+                        </div>
+
+                        <div class="col h5 text-end">
+                            <b>Current Class<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            <select class="form-select" name="currentClass" aria-label="Default select example" required>
+                                <option value="" selected>Select Class</option>
+                                {% for each in classList %}
+                                <option value="{{each.id}}">{{each}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col h5 text-end">
+                            <b>Place of Birth :</b>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="placeOfBirth" placeholder="City, Village Name">
+                        </div>
+                        <div class="col h5 text-end">
+                            <b>Gender<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            <select class="form-select" name="gender" aria-label="Default select example" required>
+                                <option value="">Select Gender</option>
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                                <option value="3">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col h5 text-end">
+                            <b>Email Id :</b>
+                        </div>
+                        <div class="col">
+                            <input type="email" class="form-control" name="emaiId" placeholder="xyz@gmail.com">
+                        </div>
+                        <div class="col h5 text-end">
+                            <b>Phone Number :</b>
+                        </div>
+                        <div class="col">
+                            <input type="number" class="form-control" name="phnNumber" placeholder="10 digit number"/>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col h5 text-end">
+                            <b>Aadhaar Number :</b>
+                        </div>
+                        <div class="col">
+                            <input type="number" class="form-control" name="aadhaar" placeholder="12 digit number">
+                        </div>
+                        <div class="col h5 text-end">
+                            <b>Blood Group :</b>
+                        </div>
+                        <div class="col">
+                            <select class="form-select" name="blood" aria-label="Default select example">
+                                <option value="">Select Blood Group</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col h5 text-end">
+                            <b>Present &nbsp;&nbsp;<br>Address :</b>
+                        </div>
+                        <div class="col-4">
+                            <textarea  class="form-control" name="presentAddress" placeholder="Enter detailed address here" rows="3"></textarea>
+                        </div>
+                        <div class="col h5 text-end">
+                            <b>Permanent<br>Address :</b>
+                        </div>
+                        <div class="col-4">
+                            <textarea  class="form-control" name="permanentAddress" placeholder="Enter detailed address here" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col-3 h5 text-end">
+                            <b>Joining Date :</b>
+                        </div>
+                        <div class="col-4">
+                            <input type="date" class="form-control" name="joinDate" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center visually-hidden">
+                        <div class="col-5 h5 text-end">
+                            <b>Role<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.role}}
+                        </div>
+                        <div class="text-end text-danger">{{form.role.errors}}</div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-end">
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}

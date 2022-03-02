@@ -1,0 +1,78 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% load bootstrap %}
+{% block title %}
+Teachers-List
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block pageHeader %}
+Register New Teacher
+{% endblock %}
+
+{% block dashboard %}
+
+<div class="container">
+    <a href="{{request.META.HTTP_REFERER|escape}}" class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{form.non_field_errors}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6 border border-dark rounded">
+                <form method="POST" class="m-3">
+                    {% csrf_token %}
+                    <div class="row  justify-content-center">
+                        <div class="col-5 h5 text-end">
+                            <b>Year of Batch<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.session_year}}
+                        </div>
+                        <div class="text-end text-danger">{{form.session_year.as_p.errors}}</div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col-5 h5 text-end">
+                            <b>Class<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.class_name}}
+                        </div>
+                        <div class="text-end text-danger">{{form.class_name.errors}}</div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col-5 h5 text-end">
+                            <b>Subject<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.subject}}
+                        </div>
+                        <div class="text-end text-danger">{{form.subject.errors}}</div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col-5 h5 text-end">
+                            <b>Teacher<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.teacher}}
+                        </div>
+                        <div class="text-end text-danger">{{form.teacher.errors}}</div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-end">
+                        <div class="col-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

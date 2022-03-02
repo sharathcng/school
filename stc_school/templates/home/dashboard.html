@@ -1,0 +1,373 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block link %}
+<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+<link href="{% static 'dashboard/css.css' %}" rel='stylesheet'>
+
+{% endblock %}
+{% block title %}
+Dashboard
+{% endblock %}
+{% block css %}
+{% endblock %}
+
+{% block body %}
+
+
+{% if request.user.is_authenticated %}
+<div class="sidebar close">
+    <div class="logo-details">
+        <div class="school-logo">
+            <img src="{% static 'dashboard/logo.png' %}" alt="profileImg">
+        </div>
+
+        <span class="logo_name">STCS</span>
+    </div>
+
+    {% if request.user.role == 1 %}
+    <ul class="nav-links">
+        <li>
+            <a href="{% url 'dashboard' %}">
+                <i class='bx bx-grid-alt'></i>
+                <span class="link_name">Profile</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="{% url 'dashboard' %}">
+                        Dashboard
+                    </a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="{% url 'batches' %}">
+                <i class='bx bx-collection'></i>
+                <span class="link_name">My Results</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li>
+                    <a class="link_name" href="{% url 'batches' %}">
+                        My Results
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div class="profile-details">
+                <div class="profile-content">
+                    {% if current_user.profile_pic.url %}
+                    <img src="{{current_user.profile_pic.url}}" alt="profileImg">
+                    {% else %}
+                    <img src="{% static 'dashboard/avatar.png' %}" alt="profileImg">
+                    {% endif %}
+                </div>
+                <div class="name-job">
+                    <div class="profile_name">{{ current_user }}</div>
+                    <div class="job">
+                        Student
+                    </div>
+                </div>
+                <a href="{% url 'logout' %}"><i class='bx bx-log-out'></i></a>
+            </div>
+        </li>
+    </ul>
+    {% elif request.user.role == 2 and request.user.is_superuser == False%}
+    <ul class="nav-links">
+        <li>
+            <a href="{% url 'dashboard' %}">
+                <i class='bx bx-grid-alt'></i>
+                <span class="link_name">Dashboard</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="{% url 'dashboard' %}">
+                        Dashboard
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="{% url 'myClasses' %}">
+                <i class='bx bx-collection'></i>
+                <span class="link_name">My Classes</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="{% url 'myClasses' %}">
+                        My Classes
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="{% url 'teachers' %}">
+                <i class='bx bx-collection'></i>
+                <span class="link_name">Teachers</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="{% url 'teachers' %}">
+                        Teachers
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div class="iocn-link">
+                <a href="{% url 'assessmentTypes' %}">
+                    <i class='bx bx-book-alt'></i>
+                    <span class="link_name">Assessments</span>
+                </a>
+                <i class='bx bxs-chevron-down arrow'></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name" href="{% url 'assessmentTypes' %}">Assessments</a></li>
+                <li><a href="{% url 'results' %}">Results</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="{% url 'attendance-classes' %}">
+                <i class='bx bx-pie-chart-alt-2'></i>
+                <span class="link_name">Attendance</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="{% url 'attendance-classes' %}">Attendance</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="profile-details">
+                <div class="profile-content">
+                    {% if current_user.profile_pic.url %}
+                    <img src="{{current_user.profile_pic.url}}" alt="profileImg">
+                    {% else %}
+                    <img src="{% static 'dashboard/avatar.png' %}" alt="profileImg">
+                    {% endif %}
+                </div>
+                <div class="name-job">
+                    <div class="profile_name">{{ user.username|title }}</div>
+                    <div class="job">
+                        {% if request.user.is_classTeacher == True %}
+                        Class Teacher
+                        {% else %}
+                        Teacher
+                        {% endif %}
+                    </div>
+                </div>
+                <a href="{% url 'logout' %}"><i class='bx bx-log-out'></i></a>
+            </div>
+        </li>
+    </ul>
+    {% elif request.user.role == 2 and request.user.is_superuser == True%}
+    <ul class="nav-links">
+        <li>
+            <a href="{% url 'dashboard' %}">
+                <i class='bx bx-grid-alt'></i>
+                <span class="link_name">Dashboard</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="{% url 'dashboard' %}">
+                        Dashboard
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="{% url 'batches' %}">
+
+                <i class='bx bx-shape-square'></i>
+                <span class="link_name">Batches</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li>
+                    <a class="link_name" href="{% url 'batches' %}">
+                        Batches
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="{% url 'classes' %}">
+                <i class='bx bx-collection'></i>
+                <span class="link_name">Classes</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li>
+                    <a class="link_name" href="{% url 'classes' %}">
+                        Classes
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <div class="iocn-link">
+                <a href="{% url 'teachers' %}">
+                    <i class='bx bx-user-pin'></i>
+
+                    <span class="link_name">Staff</span>
+                </a>
+                <i class='bx bxs-chevron-down arrow'></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name" href="{% url 'teachers' %}">Staff</a></li>
+                <li><a href="{% url 'staffs' %}">Non-Teaching Staff</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <div class="iocn-link">
+                <a href="{% url 'assessmentTypes' %}">
+                    <i class='bx bx-calendar-edit'></i>
+                    <span class="link_name">Assessments</span>
+                </a>
+                <i class='bx bxs-chevron-down arrow'></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name" href="{% url 'assessmentTypes' %}">Assessments</a></li>
+                <li><a href="{% url 'results' %}">Results</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="iocn-link">
+                <a href="{% url 'subjects' %}">
+                    <i class='bx bx-book-alt'></i>
+                    <span class="link_name">Subjects</span>
+                </a>
+            </div>
+        </li>
+
+        <li>
+            <a href="{% url 'attendance-classes' %}">
+                <i class='bx bx-sort-a-z'></i>
+                <span class="link_name">Attendance</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="{% url 'attendance-classes' %}">Attendance</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="{% url 'teacher-allocation' %}">
+                <i class='bx bxs-user-detail'></i>
+                <span class="link_name">Teacher Allocation</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="{% url 'teacher-allocation' %}">Teacher Allocation</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="{% url 'attendance-classes' %}">
+                <i class='bx bxl-windows'></i>
+                <span class="link_name">Time Table</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="{% url 'attendance-classes' %}">Time Table</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <div class="profile-details">
+                <div class="profile-content">
+                    {% if current_user.profile_pic.url %}
+                    <img src="{{current_user.profile_pic.url}}" alt="profileImg">
+                    {% else %}
+                    <img src="{% static 'dashboard/avatar.png' %}" alt="profileImg">
+                    {% endif %}
+                </div>
+                <div class="name-job">
+                    <div class="profile_name">{{ user.username|title }}</div>
+                    <div class="job">
+                        {% if request.user.is_classTeacher == True %}
+                        Class Teacher
+                        {% else %}
+                        Teacher
+                        {% endif %}
+                    </div>
+                </div>
+                <a href="{% url 'logout' %}"><i class='bx bx-log-out'></i></a>
+            </div>
+        </li>
+    </ul>
+    {% elif request.user.role == 3 %}
+    <ul class="nav-links">
+        <li>
+            <a href="{% url 'dashboard' %}">
+                <i class='bx bx-grid-alt'></i>
+                <span class="link_name">Profile</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="{% url 'dashboard' %}">
+
+                        Dashboard
+
+                    </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="{% url 'batches' %}">
+                <i class='bx bx-collection'></i>
+                <span class="link_name">My Results</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="{% url 'batches' %}">
+
+                        Batches
+
+                    </a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="profile-details">
+                <div class="profile-content">
+                    {% if current_user.profile_pic.url %}
+                    <img src="{{current_user.profile_pic.url}}" alt="profileImg">
+                    {% else %}
+                    <img src="{% static 'dashboard/avatar.png' %}" alt="profileImg">
+                    {% endif %}
+                </div>
+                <div class="name-job">
+                    <div class="profile_name">{{ current_user.user_id.username }}</div>
+                    <div class="job">
+                        {{class_teacher.class_name}} {{class_teacher.class_section}}
+                    </div>
+                </div>
+                <a href="{% url 'logout' %}" class="class='bx bx-log-out'"></a>
+            </div>
+        </li>
+    </ul>
+    {% endif %}
+</div>
+<section class="home-section">
+    <div class="home-content navbar">
+        <i class='bx bx-menu'></i>
+        <span class="text">
+            {% block pageHeader %}
+            Dashboard
+            {% endblock %}
+        </span>
+        <div class="d-flex">
+            <span class="pt-2 me-2">
+                You are logged in {{request.user_agent.os.family}} - {{request.user_agent.os.version_string}}.
+                ({{request.user_agent.browser.family}})
+                &nbsp;&nbsp;
+                Hello, </span>
+            <span class="fw-bold pt-2 me-2">{{ user.teacher.full_name}}</span>
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger me-2" type="submit">Logout</a>
+        </div>
+    </div>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="m-2 alert {{message.tags}} alert-dismissible fade show" role="alert">
+        <strong></strong> {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% block dashboard %}
+
+    {% endblock %}
+</section>
+
+<script src="{% static 'dashboard/js.js' %}"></script>
+
+{% endif %}
+{% endblock %}

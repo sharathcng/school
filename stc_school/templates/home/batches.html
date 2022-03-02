@@ -1,0 +1,88 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% block title %}
+Sessions-List
+{% endblock %}
+{% block css %}
+{% endblock %}
+
+{% block pageHeader %}
+All Batches
+{% endblock %}
+
+{% block dashboard %}
+
+<div class="container mt-2">
+    <div class="row">
+        <div class="col">
+            <a href="{{request.META.HTTP_REFERER|escape}}"
+                class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+        </div>
+        <div class="col text-end">
+            <a href="{% url 'create-batch' %}" class="btn btn-sm btn-warning">Create New Batch</a>
+        </div>
+    </div>
+</div>
+
+
+{% if sessions %}
+<div class="container">
+    <div class="row text-center">
+        {% for session in sessions %}
+        <div class="col-sm-3 mt-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Batch : {{session.sessionYear}}</h5>
+                    <a href="{% url 'batchClasses' session.sessionYear %}" class="btn btn-primary text-end">View
+                        Classes</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="pagination align-middle text-center">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a class="btn btn-sm btn-dark" href="?page=1">
+                <i class='bx bxs-arrow-to-left'></i>first
+            </a>
+            <a class="btn btn-sm btn-dark" href="?page={{ page_obj.previous_page_number }}">
+                <i class='bx bxs-chevron-left'></i>previous
+            </a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+            <a class="btn btn-sm btn-dark" href="?page={{ page_obj.next_page_number }}">
+                next<i class='bx bxs-chevron-right'></i>
+            </a>
+            <a class="btn btn-sm btn-dark" href="?page={{ page_obj.paginator.num_pages }}">
+                last<i class='bx bxs-arrow-to-right'></i>
+            </a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% else %}
+
+<div class="container px-4">
+    <div class="row gx-5 justify-content-center">
+        <div class="col-5 align-self-center">
+            <div class="p-3 border rounded bg-light">
+                <h2>No Batches created yet..!!!</h2>
+                <p class="text-center">
+                    Please start creating new batch by clicking the button on <b>top right corner</b> of this page.<br>
+                </p>
+                  <h3 class="text-center">Good Luck!</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
+
+{% endblock %}

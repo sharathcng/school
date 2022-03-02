@@ -1,0 +1,115 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% block title %}
+Assessment Lists
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block pageHeader %}
+{{assessmentType}}
+{% endblock %}
+
+{% block dashboard %}
+<div class="container">
+    <div class="row">
+        <div class="col ">
+            <a href="{{request.META.HTTP_REFERER|escape}}"
+                class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+        </div>
+        {% if user.is_authenticated and user.is_classTeacher %}
+        <div class="col text-end">
+            <a href="{% url 'create-assessment' %}" class="btn btn-sm btn-warning">Create New Assessment</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container table-responsive table-responsive-md table-responsive-lg table-responsive-x border rounded">
+
+    <table id="myTable" class="table table-hover table-striped border border-dark rounded text-center caption-top ">
+
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Class</th>
+                <th scope="col">Subject</th>
+                <th scope="col">date</th>
+                <th scope="col">Start Time</th>
+                <th scope="col">End Time</th>
+                <th scope="col">Marks</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in assessment %}
+            <tr class="mx-auto">
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{obj.class_name}}</td>
+                <td>{{obj.subject}}</td>
+                <td>{{obj.date|date:"Y-m-d"}}</td>
+                <td>{{obj.start_time}}</td>
+                <td>{{obj.end_time}}</td>
+                <td><a href="{% url 'update-marks' obj.class_name.id obj.subject.id obj.id assessmentType.id %}"
+                        class="btn btn-sm btn-success">Update</a></td>
+                <td class="d-flex justify-content-center">
+                    <a href="{% url 'update-assessment' obj.id assessmentType.id%}" class="btn btn-sm btn-success me-2">Edit</a>
+                    <form method="post" action="{% url 'delete-assessment' obj.id%}" class="">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                    
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block jsFiles %}
+<script>
+    $('#myTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'colvis',
+            {
+                extend: 'copy',
+                split: [
+                    {
+                        extend: 'pdf',
+                        title: 'Students List',
+                        messageTop: 'The list of students studying in our school.',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                    {
+                        extend: 'excel',
+                        title: 'Students List',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                    {
+                        extend: 'csv',
+                        title: 'Students List',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                ],
+            },
+        ],
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal({
+                    header: function (row) {
+                        var data = row.data();
+                        return 'Details for ' + data[0] + ' ' + data[1];
+                    }
+                }),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                    tableClass: 'table'
+                })
+            }
+        }
+    });
+</script>
+{% endblock %}

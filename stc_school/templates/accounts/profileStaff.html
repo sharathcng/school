@@ -1,0 +1,121 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% block title %}
+Staff Profile
+{% endblock %}
+{% block css %}
+{% endblock %}
+
+{% block pageHeader %}
+Staff Profile Page
+{% endblock %}
+
+{% block dashboard %}
+
+<div class="container">
+    <div class="row">
+        <div class="col text-start">
+            <a href="{{request.META.HTTP_REFERER|escape}}"
+                class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+        </div>
+        {% if request.user.is_superuser %}
+        <div class="col text-end">
+            <a class="btn btn-md btn-success" href="{% url 'staffProfileEdit' staff.user_id %}">Edit</a>
+        </div>
+        {% endif %}
+    </div>
+    <div class="row">
+
+        <div class="col-3 mt-3">
+            {% if staff.profile_pic %}
+            <img src="{{staff.profile_pic.url}}" class="img-fluid img-thumbnail bg-dark" alt="...">
+
+            {% else %}
+            <img src="{% static 'dashboard/avatar.png' %}" class="img-fluid img-thumbnail bg-dark" alt="...">
+            {% endif %}
+        </div>
+        <div class="col-9">
+            <table class="table table-hover table-striped align-middle caption-top ">
+                <div class="row justify-content-between">
+                    <div class="col-6">
+                        <h2 class="text-center"><b>{{staff.full_name}}</b></h2>
+                    </div>
+                    <div class="col-6">
+                        <h2 class="text-center align-middle"><b>User id : {{staff.user_id.username}}</b></h2>
+                    </div>
+                </div>
+                <tbody class="align-middle">
+
+                    <tr>
+                        <th scope="col" class="text-end">Date of Birth</th>
+                        <td>:</td>
+                        <td>{{staff.date_of_birth}}</td>
+                        <th scope="col" class="text-end">Gender</th>
+                        <td>:</td>
+                        <td>{% if staff.gender == 1 %}
+                            Male
+                            {% elif staff.gender == 2 %}
+                            Female
+                            {% else %}
+                            Other
+                            {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th scope="col" class="text-end">Phone Number</th>
+                        <td>:</td>
+                        <td>{{staff.phone_number}}</td>
+                        <th scope="col" class="text-end">Email id</th>
+                        <td>:</td>
+                        <td>{{staff.email_id}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="col" class="text-end">Aadhaar Number</th>
+                        <td>:</td>
+                        <td>{{staff.aadhaar_number}}</td>
+                        <th scope="col" class="text-end">Blood Group</th>
+                        <td>:</td>
+                        <td>{{staff.blood_group}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="col" class="text-end">Date of Joining</th>
+                        <td>:</td>
+                        <td>{{staff.started_date}}</td>
+                        <th scope="col" class="text-end">Date of Resigne</th>
+                        <td>:</td>
+                        <td>
+                            {% if staff.end_date == None %}
+                            Working currently
+                            {% else %}
+                            {{staff.end_date}}
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <table class="table table-hover table-striped align-middle caption-top ">
+        <caption><b>Present Address : </b></caption>
+        <tbody>
+            <tr>
+                <div class="row">
+                    <td colspan="4">{{staff.present_address}}</td>
+                </div>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-hover table-striped align-middle caption-top ">
+        <caption><b>Permanent Address : </b></caption>
+        <tbody>
+            <tr>
+                <div class="row">
+                    <td colspan="4">{{staff.permanent_address}}</td>
+                </div>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

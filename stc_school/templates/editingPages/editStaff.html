@@ -1,0 +1,122 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% load bootstrap %}
+{% block title %}
+Edit Staff
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block pageHeader %}
+Edit Staff Profile
+{% endblock %}
+
+{% block dashboard %}
+<div class="container">
+    <a href="{{request.META.HTTP_REFERER|escape}}" class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+    {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{% for fm in form %} {{fm.errors}} {% endfor %}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col border border-dark rounded">
+                <form method="POST" class="m-2">
+                    {% csrf_token %}
+                    <div class="row h6 justify-content-center">
+                        <div class="col text-end">
+                            <b>Full Name<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.full_name}}
+                        </div>
+                        <div class="col text-end">
+                            <b>Date of Birth<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.date_of_birth}}
+                        </div>
+                    </div>
+                    <div class="row h6 justify-content-center">
+                        <div class="col text-end">
+                            <b>Gender<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.gender}}
+                        </div>
+                        <div class="col text-end">
+                            <b>Email Id<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.email_id}}
+                        </div>
+                    </div>
+                    <div class="row h6 justify-content-center">
+                        <div class="col text-end">
+                            <b>Phone Number<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.phone_number}}
+                        </div>
+                        <div class="col text-end">
+                            <b>Blood Group<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.blood_group}}
+                        </div>
+                    </div>
+                    <div class="row h6 justify-content-center">
+                        <div class="col text-end">
+                            <b>Start Date<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.started_date}}
+                        </div>
+                        <div class="col text-end">
+                            <b>End Date<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.end_date}}
+                        </div>
+                    </div>
+                    <div class="row h6 justify-content-center">
+                        <div class="col text-end">
+                            <b>Present Address<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.present_address}}
+                        </div>
+                        <div class="col text-end">
+                            <b>Permanent Address<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.permanent_address}}
+                        </div>
+                    </div>
+                    <div class="row h6 justify-content-center">
+                        <div class="col text-end">
+                            <b>Aadhar Number<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.aadhaar_number}}
+                        </div>
+                        <div class="col text-end">
+                            <b>Profile Picture:</b>
+                        </div>
+                        <div class="col">
+                            {{form.profile_pic}}
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary">Click to update Teacher Details</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% load bootstrap %}
+{% block title %}
+Old-Assessment-Lists
+{% endblock %}
+{% block css %}
+{% endblock %}
+
+{% block pageHeader %}
+Old Assessments
+{% endblock %}
+
+{% block dashboard %}
+<div class="container">
+    
+    <a href="{{request.META.HTTP_REFERER|escape}}" class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+
+    <form action="" method="GET">
+        {{filter.form|bootstrap}}
+        <br>
+        <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+    </form>
+
+
+    <div class="row">
+        {% for snippet in filter.qs %}
+        <div class="col-sm-4 mt-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Class : {{snippet.assessment_name}}
+                        </h5>{{snippet.assessment_description}}
+                        <br>
+                    <a href="{% url 'assessments' snippet.id %}" class="btn btn-primary">View Assessments</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

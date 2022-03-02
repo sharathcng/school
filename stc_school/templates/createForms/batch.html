@@ -1,0 +1,76 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% load bootstrap %}
+{% block title %}
+Teachers-List
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block pageHeader %}
+Register New Teacher
+{% endblock %}
+
+{% block dashboard %}
+
+<div class="container">
+    <a href="{{request.META.HTTP_REFERER|escape}}" class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{fm.non_field_errors}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6 border border-dark rounded">
+                <form method="POST" class="m-3">
+                    {% csrf_token %}
+                    <!-- {{ form|bootstrap}} -->
+                    <div class="row  justify-content-center">
+                        <div class="col-5 h5 text-end">
+                            <b>Year of Batch<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.sessionYear}}
+                        </div>
+                        <div class="text-end text-danger">{{form.sessionYear.as_p.errors}}</div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col-5 h5 text-end">
+                            <b>Start Date<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.start_date}}
+                        </div>
+                        <div class="text-end text-danger">{{form.start_date.errors}}</div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col-5 h5 text-end">
+                            <b>End Date<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.end_date}}
+                        </div>
+                        <div class="text-end text-danger">{{form.end_date.errors}}</div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-end">
+                        <div class="col-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("date")[0].setAttribute('min', today);
+</script>
+{% endblock %}

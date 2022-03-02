@@ -1,0 +1,109 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% block title %}
+Students-List
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block pageHeader %}
+List of Dates - Class : {{className}}
+{% endblock %}
+{% block dashboard %}
+
+
+<div class="container">
+    <a href="{{request.META.HTTP_REFERER|escape}}" class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+
+    <div class="row">
+        {% if user.is_authenticated and user.is_classTeacher %}
+        <div class="col text-start">
+            <form method="POST" action="{% url 'update-old-attendance' className.id %}">
+                {% csrf_token %}
+                To Take Old Attendance Select Date <input type="date" name="oldDate" id="oldDate" class="btn btn-sm btn-warning" required/>
+                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <div class="col text-end">
+            <a href="{% url 'take-attendance' className.id %}" class="btn btn-sm btn-warning">Take Today's
+                Attendance</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+
+<div class="container table-responsive table-responsive-md table-responsive-lg table-responsive-x mt-1">
+
+<table id="myTable" class="table table-hover text-center table-striped border border-dark rounded caption-top ">
+    <thead>
+        <tr>
+            <th scope="col">Dates</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in attendance %}
+
+        <tr class="mx-auto">
+            <td class="text-uppercase">
+
+                <a href="{% url 'attendance-students' className.id s.date  %}" class="text-decoration-none">
+                    {{s.date}}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock %}
+
+{% block jsFiles %}
+<script>
+    $('#myTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'colvis',
+            {
+                extend: 'copy',
+                split: [
+                    {
+                        extend: 'pdf',
+                        title: 'Students List',
+                        messageTop: 'The list of students studying in our school.',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                    {
+                        extend: 'excel',
+                        title: 'Students List',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                    {
+                        extend: 'csv',
+                        title: 'Students List',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                ],
+            },
+        ],
+
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal({
+                    header: function (row) {
+                        var data = row.data();
+                        return 'Details for ' + data[0] + ' ' + data[1];
+                    }
+                }),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                    tableClass: 'table'
+                })
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% block title %}
+Assessment Lists
+{% endblock %}
+{% block css %}
+{% endblock %}
+
+{% block pageHeader %}
+Assessments
+{% endblock %}
+
+{% block dashboard %}
+
+
+<div class="container">
+    <a href="{{request.META.HTTP_REFERER|escape}}" class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+    <div class="row">
+        {% if user.is_authenticated and user.is_superuser %}
+        <div class="col text-end">
+            <a href="{% url 'create-assessmentType' %}" class="btn btn-sm btn-warning">Create New Assessment Type</a>
+            <a href="{% url 'oldAssessments' %}" class="btn btn-sm btn-warning">Old Year Assessments</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% if assessment_type %}
+<div class="container">
+    <div class="row">
+        {% for obj in assessment_type %}
+        <div class="col-sm-4 mt-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{obj.assessment_name}}
+                    </h5>
+                    <p>{{obj.assessment_description}}</p>{{obj.subject}}
+                    {% if user.is_superuser and user.role == 2  %}
+                    <a href="{% url 'assessments' obj.id %}" class="btn btn-primary ">View
+                        Assessments</a>
+                    {% elif user.role == 2%}
+                    <a href="{% url 'myAssessments' obj.id %}" class="btn btn-primary ">View
+                        Assessments</a>
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    
+</div>
+
+
+{% else %}
+
+<div class="container px-4">
+    <div class="row gx-5 justify-content-center">
+        <div class="col-5 align-self-center">
+            <div class="p-3 border rounded bg-light">
+                <h2>No Assessments created yet..!!!</h2>
+                <p class="text-center">
+                    Please start creating <b>New Assessment</b> by clicking the button on <b>top right corner</b> of this page.<br>
+                </p>
+                  <h3 class="text-center">Good Luck!</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
+{% endblock %}

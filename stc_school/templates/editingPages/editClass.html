@@ -1,0 +1,70 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% load bootstrap %}
+{% block title %}
+Edit Class Details
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block pageHeader %}
+Edit Class Details
+{% endblock %}
+
+{% block dashboard %}
+<div class="container">
+    <a href="{{request.META.HTTP_REFERER|escape}}" class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+    {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong> {{form.errors}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6 border border-dark rounded">
+                <form method="POST" class="m-2">
+                    {% csrf_token %}
+                    <div class="row h6 justify-content-center">
+                        <div class="col-3 text-end">
+                            <b>Batch Year<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.session_year}}
+                        </div>
+                    </div>
+                    <div class="row h6 justify-content-center">
+                        <div class="col-3 text-end">
+                            <b>Class Name<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.class_name}}
+                        </div>
+                    </div>
+                    <div class="row h6 justify-content-center">
+                        <div class="col-3 text-end">
+                            <b>Class Section<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.class_section}}
+                        </div>
+                    </div>
+                    <div class="row h6 justify-content-center">
+                        <div class="col-3 text-end">
+                            <b>Class Teacher<span style="color: red;">* </span>:</b>
+                        </div>
+                        <div class="col">
+                            {{form.class_teacher}}
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary">Click to update Class Details</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

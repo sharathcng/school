@@ -1,0 +1,91 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% block title %}
+Students-List
+{% endblock %}
+{% block css %}
+{% endblock %}
+
+{% block pageHeader %}
+List of Students - Class : {{className}}
+{% endblock %}
+
+{% block dashboard %}
+
+<div class="container table-responsive table-responsive-md table-responsive-lg table-responsive-x">
+
+    <a href="{{request.META.HTTP_REFERER|escape}}" class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+    
+    <table id="myTable" class="table table-hover table-striped text-center border border-dark rounded align-middle caption-top ">
+        
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Student</th>
+                <th scope="col">Marks</th>
+                <th scope="col">Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in students%}
+            <tr class="mx-auto">
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{obj.student}}</td>
+                <td class="text-uppercase">{{obj.marks_gained}}</td>
+                <td>{{obj.grade}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
+{% block jsFiles %}
+<script>
+    $('#myTable').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+        'colvis',
+        {
+            extend: 'copy',
+            split: [
+            {
+                extend: 'pdf',
+                title: 'Students List',
+                messageTop: 'The list of students studying in our school.',
+                pageSize: 'LEGAL',
+                download: 'open',
+            },
+            {
+                extend: 'excel',
+                title: 'Students List',
+                pageSize: 'LEGAL',
+                download: 'open',
+            },
+            {
+                extend: 'csv',
+                title: 'Students List',
+                pageSize: 'LEGAL',
+                download: 'open',
+            },
+            ],
+        },       
+        ],
+
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        return 'Details for '+data[0]+' '+data[1];
+                    }
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                    tableClass: 'table'
+                } )
+            }
+        }
+    } );
+</script>
+{% endblock %}

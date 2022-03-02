@@ -1,0 +1,129 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% block title %}
+Current-Session-Classes
+{% endblock %}
+{% block css %}
+
+{% endblock %}
+
+{% block pageHeader %}
+{{sessionName}} Batch Classes
+{% endblock %}
+
+{% block dashboard %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <a href="{{request.META.HTTP_REFERER|escape}}"
+                class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+        </div>
+        <div class="col text-end align-text-bottom">
+            <a href="{% url 'create-class' %}" class="btn btn-warning btn-sm">Create New Class</a>
+            <a href="{% url 'student-signup' %}" class="btn btn-warning btn-sm">Register Student</a>
+        </div>
+    </div>
+</div>
+
+{% if classes %}
+<div class="container table-responsive table-responsive-md table-responsive-lg table-responsive-x border rounded">
+    <table id="myTable"
+        class="table table-hover table-striped border border-dark rounded align-middle caption-top text-center">
+        <caption>List of Teachers</caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Class Name</th>
+                <th scope="col">Class Teacher</th>
+                <th scope="col">Class Strength</th>
+                <th scope="col">Students List</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj,count in classes %}
+            <tr class="mx-auto">
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{obj.class_name}} {{obj.class_section}}</td>
+                <td class="text-uppercase">{{obj.class_teacher}}</td>
+                <td>{{count}}</td>
+                <td>
+                    <a href="{% url 'students' obj.id %}" class="btn btn-sm btn-primary">View</a>
+                </td>
+                <td>
+                    <a href="{% url 'edit-class-details' obj.id %}" class="btn btn-sm btn-primary">Update</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+
+<div class="container px-4">
+    <div class="row gx-5 justify-content-center">
+        <div class="col-5 align-self-center">
+            <div class="p-3 border rounded bg-light">
+                <h2>No Classes created yet..!!!</h2>
+                <p class="text-center">
+                    Please start creating <b>New Class</b> by clicking the button on <b>top right corner</b> of this
+                    page.<br>
+                </p>
+                <h3 class="text-center">Good Luck!</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
+{% endblock %}
+{% block jsFiles %}
+<script>
+    $('#myTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'colvis',
+            {
+                extend: 'copy',
+                split: [
+                    {
+                        extend: 'pdf',
+                        title: 'Students List',
+                        messageTop: 'The list of students studying in our school.',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                    {
+                        extend: 'excel',
+                        title: 'Students List',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                    {
+                        extend: 'csv',
+                        title: 'Students List',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                ],
+            },
+        ],
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal({
+                    header: function (row) {
+                        var data = row.data();
+                        return 'Details for ' + data[0] + ' ' + data[1];
+                    }
+                }),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                    tableClass: 'table'
+                })
+            }
+        }
+    });
+</script>
+{% endblock %}

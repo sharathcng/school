@@ -1,0 +1,124 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% block title %}
+{{sessionName}} Teacher Allocations
+{% endblock %}
+{% block css %}
+
+{% endblock %}
+
+{% block pageHeader %}
+{{sessionName}} Teacher Allocations
+{% endblock %}
+
+{% block dashboard %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <a href="{{request.META.HTTP_REFERER|escape}}"
+                class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+        </div>
+        <div class="col text-end align-text-bottom">
+            <a href="{% url 'teacher-allocation-create' %}" class="btn btn-warning btn-sm">Allocate New</a>
+        </div>
+    </div>
+</div>
+
+{% if teacherAllocation %}
+<div class="container table-responsive table-responsive-md table-responsive-lg table-responsive-x border rounded">
+    <table id="myTable"
+        class="table table-hover table-striped border border-dark rounded align-middle caption-top text-center">
+        <caption>List of Teacher Allocations</caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Class Name</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Teacher</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in teacherAllocation %}
+            <tr class="mx-auto">
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{obj.class_name}} {{obj.class_section}}</td>
+                <td class="text-uppercase">{{obj.subject}}</td>
+                <td class="text-uppercase">{{obj.teacher}}</td>
+                <td>
+                    <a href="{% url 'teacher-allocation-update' obj.id %}" class="btn btn-sm btn-primary">Update</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+
+<div class="container px-4">
+    <div class="row gx-5 justify-content-center">
+        <div class="col-5 align-self-center">
+            <div class="p-3 border rounded bg-light">
+                <h2>No Classes created yet..!!!</h2>
+                <p class="text-center">
+                    Please start creating <b>New Class</b> by clicking the button on <b>top right corner</b> of this
+                    page.<br>
+                </p>
+                <h3 class="text-center">Good Luck!</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
+{% endblock %}
+{% block jsFiles %}
+<script>
+    $('#myTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'colvis',
+            {
+                extend: 'copy',
+                split: [
+                    {
+                        extend: 'pdf',
+                        title: 'Students List',
+                        messageTop: 'The list of students studying in our school.',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                    {
+                        extend: 'excel',
+                        title: 'Students List',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                    {
+                        extend: 'csv',
+                        title: 'Students List',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                ],
+            },
+        ],
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal({
+                    header: function (row) {
+                        var data = row.data();
+                        return 'Details for ' + data[0] + ' ' + data[1];
+                    }
+                }),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                    tableClass: 'table'
+                })
+            }
+        }
+    });
+</script>
+{% endblock %}

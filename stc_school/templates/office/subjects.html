@@ -1,0 +1,126 @@
+{% extends 'home/dashboard.html' %}
+{% load static %}
+{% load bootstrap %}
+{% block title %}
+Teachers-List
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block pageHeader %}
+List of Teachers
+{% endblock %}
+{% block dashboard %}
+
+<div class="container">
+    <div class="row">
+        <div class="col ">
+            <a href="{{request.META.HTTP_REFERER|escape}}"
+                class='h3 bx bx-arrow-back text-decoration-none text-dark'></a>
+        </div>
+
+        <div class="col text-end">
+            {% if request.user.is_superuser %}
+            <a href="{% url 'create-subject' %}" class="btn btn-warning btn-sm">Create New Subject</a> &nbsp;
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+{% if object_list %}
+<div class="container table-responsive table-responsive-md table-responsive-lg table-responsive-x border rounded">
+
+    <table id="myTable" class="table table-hover table-striped border border-dark rounded text-center caption-top ">
+
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Subject Name</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Updated At</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subject in object_list  %}
+            <tr class="mx-auto">
+                <th scope="row">{{ forloop.counter }}</th>
+                <td class="fw-bold">{{subject.subject_name|capfirst}}<br></td>
+                <td >{{subject.updated_at}}<br></td>
+                <td>{{ subject.created_at }}</td>
+                <td>
+                    <a href="{% url 'edit-subject' subject.id  %}" class="btn btn-sm btn-warning">Update</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% else %}
+
+<div class="container px-4">
+    <div class="row gx-5 justify-content-center">
+        <div class="col-6 align-self-center">
+            <div class="p-3 border rounded bg-light">
+                <h2 class="text-center">No Subjects created yet..!!!</h2>
+                <p class="text-center">
+                    Please start creating <b>New Subject</b> by clicking the button on <b>top right corner</b> of this page.<br>
+                </p>
+                  <h3 class="text-center">Good Luck!</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
+{% endblock %}
+{% block jsFiles %}
+<script>
+    $('#myTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'colvis',
+            {
+                extend: 'copy',
+                split: [
+                    {
+                        extend: 'pdf',
+                        title: 'Students List',
+                        messageTop: 'The list of students studying in our school.',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                    {
+                        extend: 'excel',
+                        title: 'Students List',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                    {
+                        extend: 'csv',
+                        title: 'Students List',
+                        pageSize: 'LEGAL',
+                        download: 'open',
+                    },
+                ],
+            },
+        ],
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal({
+                    header: function (row) {
+                        var data = row.data();
+                        return 'Details for ' + data[0] + ' ' + data[1];
+                    }
+                }),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                    tableClass: 'table'
+                })
+            }
+        }
+    });
+</script>
+{% endblock %}
